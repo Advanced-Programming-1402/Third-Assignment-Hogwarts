@@ -44,7 +44,7 @@ public class Account implements AccountManagement {
     public UUID getAccountID(){
         return accountID;
     }
-    public void SignUp(String pass){
+    public void SignUp(String pass) {
         this.password = hashingPassword(pass);
     }
 }
