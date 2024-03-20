@@ -1,3 +1,4 @@
+import javax.swing.plaf.IconUIResource;
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
@@ -64,7 +65,7 @@ public class Main {
                             System.out.print("Courses : ");
                             for(int i = 0 ; i < Hogwarts.students.get(userchoice2-1).courses.size() ; i++) {
                                 Course course = Hogwarts.students.get(userchoice2-1).courses.get(i);
-                                System.out.print(course.getCourseName() + "Teacher : " + course.courseTeacher.getUsername() + "Score : " + course.studentScore.get(Hogwarts.students.get(userchoice2).getUsername());
+                                System.out.print(course.getCourseName() + "Teacher : " + course.courseTeacher.getUsername() + "Score : " + course.studentScore.get(Hogwarts.students.get(userchoice2).getUsername()));
                             }
                             break;
                     }
@@ -86,7 +87,7 @@ public class Main {
                             Hogwarts.viewAllTeachers();
                             System.out.println("Please Enter the name of the teacher that you want to remove : ");
                             String removingTeacherName = input.nextLine();
-                            boolean isExist = false
+                            boolean isExist = false;
                             for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
                                 if(Hogwarts.teachers.get(i).getUsername() == removingTeacherName) {
                                     isExist = true;
@@ -96,7 +97,7 @@ public class Main {
                                 System.out.println("Something went wrong, This user in not exist...");
                             }
                             else {
-                                Teacher teacher = new Teacher(" " , removingTeacherName)
+                                Teacher teacher = new Teacher(" " , removingTeacherName);
                                 for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
                                     if(Hogwarts.teachers.get(i).getUsername() == removingTeacherName) {
                                         Hogwarts.teachers.remove(teacher);
@@ -163,14 +164,45 @@ public class Main {
                         Course course = Hogwarts.courses.get(i);
                         System.out.print(course.getCourseName() + " : ");
                         System.out.println(course.getInformation() + " " + course.courseTeacher.getUsername());
-                        for(int j = 0 ; j < course.getStudents().size() ; j++) {
+                        for (int j = 0; j < course.getStudents().size(); j++) {
                             System.out.print(course.getStudents().get(j));
                         }
                         System.out.println();
+                    }
                     break;
                 case 6:
                     System.out.println("1.Change PassWord \n2.Change UserName");
+                    int userchoice3 = input.nextInt();
+                    while(userchoice3 > 2 || userchoice3 < 1) {
+                        System.out.println("Invalid Data...");
+                        userchoice3 = input.nextInt();
+                    }
+                    switch(userchoice3){
+                        case 1 :
+                            System.out.println("Please Enter your new password : ");
+                            String newPass = input.nextLine();
+                            assistant.changePassword(newPass);
+                            break;
+                        case 2 :
+                            System.out.println("Please Enter your new username : ");
+                            String newUsername = input.nextLine();
+                            if(newUsername != assistant.getUsername()) {
+                                boolean isExist = false;
+                                for(int i = 0 ; i < Hogwarts.assistants.size() ; i++) {
+                                    if(Hogwarts.assistants.get(i).getUsername() == newUsername) {
+                                        isExist = true;
+                                    }
 
+                                }
+                                if(isExist == true) {
+                                    System.out.println("This username is already exist");
+                                }
+                                else {
+                                    assistant.changeUsername(newUsername);
+                                }
+                            }
+                            break;
+                    }
                     break;
                 case 7:
                     while(true) {
@@ -200,8 +232,246 @@ public class Main {
             }
         }
     }
+    public static void teacherMenu(Teacher teacher) {
+        Scanner input = new Scanner(System.in);
+        while(true) {
+            System.out.println("Hi... Welcome To Our Platform :)  ");
+            System.out.println("Please Enter the number of your desire option :  ");
+            System.out.println("1.Request To Create A New Course");
+            System.out.println("2.Show Teacher's Courses");
+            System.out.println("3.Scoring");
+            System.out.println("4.Show The Teacher's Scores");
+            System.out.println("5.Settings");
+            System.out.println("6.Log Out");
+            int choice = input.nextInt();
+            while(choice > 6 || choice < 1 ) {
+                System.out.println("Invalid Data...");
+                choice = input.nextInt();
+            }
+            switch(choice) {
+                case 1 :
+                    Hogwarts.requestForCourse(teacher);
+                    break;
+                case 2 :
+                    teacher.getStudent();
+                    break;
+                case 3 :
+                    Hogwarts.setScore(teacher);
+                    break;
+                case 4 :
+                    teacher.getTeacherScore();
+                    break;
+                case 5 :
+                    System.out.println("1.Change PassWord \n2.Change UserName");
+                    int userChoice = input.nextInt();
+                    while(userChoice > 2 || userChoice < 1) {
+                        System.out.println("Invalid Data ...");
+                        System.out.println("1.Change PassWord \n2.Change UserName");
+                        userChoice = input.nextInt();
+                    }
+                    switch(userChoice) {
+                        case 1 :
+                            System.out.println("Please Enter your new password : ");
+                            String newPassword = input.next();
+                            teacher.changePassword(newPassword);
+                            break;
+                        case 2 :
+                            System.out.println("Please Enter your new username : ");
+                            String newUsername = input.next();
+                            boolean isExist = false;
+                            for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
+                                if(Hogwarts.teachers.get(i).getUsername() == newUsername) {
+                                    isExist = true;
+                                }
+                            }
+                            if(isExist == true) {
+                                System.out.println("This username is already exist ...");
+                            }
+                            else {
+                                String chosenUsername = teacher.getUsername();
+                                teacher.changeUsername(newUsername);
+                                for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
+                                    if(Hogwarts.teachers.get(i).getAccountID() == teacher.getAccountID()) {
+                                        Hogwarts.teachers.get(i).changeUsername(newUsername);
+                                    }
+                                }
+                                for(int i = 0 ; i < Hogwarts.courses.size() ; i++) {
+                                    if(Hogwarts.courses.get(i).getCourseTeacher().getAccountID() == teacher.getAccountID()) {
+                                        Hogwarts.courses.get(i).changeTeacher(teacher);
+                                    }
+                                }
+                                for(int i = 0 ; i < Hogwarts.students.size() ; i++) {
+                                    Student student = Hogwarts.students.get(i);
+                                    for(int j = 0 ; j < student.getTeachers().size() ; j++) {
+                                        if(student.courses.get(j).getCourseTeacher().getAccountID() == teacher.getAccountID()) {
+                                            student.courses.get(j).changeTeacher(teacher);
+                                        }
+                                    }
+                                }
+                                for(int i = 0 ; i < Assistant.tempTeacher.size() ; i++) {
+                                    if(Assistant.tempTeacher.get(i).getUsername() == teacher.getUsername()) {
+                                        Assistant.tempTeacher.get(i).changeUsername(chosenUsername);
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 6 :
+                    break;
+            }
+        }
+    }
+    public static void studentMenu(Student student) {
+        Scanner input = new Scanner(System.in);
+        while(true) {
+            System.out.println("Hi... Welcome To Our Platform :)  ");
+            System.out.println("Please Enter the number of your desire option :  ");
+            System.out.println("1.Take A New Course");
+            System.out.println("2.Show The Courses");
+            System.out.println("3.Show The Teachers");
+            System.out.println("4.Show The Teacher's Scores");
+            System.out.println("5.Settings");
+            System.out.println("6.Log Out");
+            int choice = input.nextInt();
+            while(choice > 6 || choice < 1 ) {
+                System.out.println("Invalid Data...");
+                choice = input.nextInt();
+            }
+            switch(choice) {
+                case 1 :
+                    System.out.println("Please Enter the number of each course that you want : ");
+                    for(int i = 0 ; i < Hogwarts.courses.size() ; i++) {
+                        Course course = Hogwarts.courses.get(i);
+                        System.out.println((i+1) + course.getCourseName() + course.getCourseTeacher().getUsername() + Course.getCourseID());
+                    }
+                    int userChoice = input.nextInt();
+                    if(userChoice > Hogwarts.courses.size()) {
+                        System.out.println("Invalid Data....");
+                    }
+                    else {
+                        Course course = Hogwarts.courses.get(userChoice);
+                        boolean isExist = false;
+                        for(int i = 0 ; i < student.courses.size() ; i++) {
+                            if(student.courses.get(i).getCourseID() == course.getCourseID()) {
+                                isExist = true;
+                            }
+
+                        }
+                        if(isExist == true) {
+                            System.out.println("This course is already exist...");
+                        }
+                        else {
+                            student.addCourse(course);
+                        }
+                    }
+                    break;
+                case 2 :
+                    for(int i = 0 ; i < student.getCourses().size() ; i++) {
+                        System.out.println(student.getTeachers().get(i).getUsername() + " ");
+                    }
+                    break;
+                case 3 :
+                    break;
+                case 4 :
+                    System.out.println("Do you want to see the teacher's score for which course : ");
+                    for(int i = 0 ; i < student.courses.size() ; i++) {
+                        Course course = student.courses.get(i);
+                        System.out.println((i+1) + course.getCourseName() + course.getCourseTeacher().getUsername() + course.getCourseID());
+                    }
+                    int userChoice2 = input.nextInt();
+                    while(userChoice2 > student.courses.size() || userChoice2 < 1) {
+                        System.out.println("Invalid Data!!!");
+                        userChoice2 = input.nextInt();
+                    }
+                    Course course = student.courses.get(userChoice2);
+                    if(student.scoreTeacher( ,0.0).get(course.getCourseID()) == " ") {
+                        System.out.println("Score this teacher : ");
+                        Double teacherScore = input.nextDouble();
+                        student.scoreTeacher(course.getCourseID() , teacherScore);
+                    }
+                    else{
+                        System.out.println("You have already score this teacher!!!");
+                    }
+                    break;
+                case 5 :
+                    System.out.println("1.Change PassWord \n2.Change UserName ");
+                    int userChoice3 = input.nextInt();
+                    while(userChoice3 > 2 || userChoice3 < 1) {
+                        System.out.println("Invalid Data !!!");
+                        userChoice3 = input.nextInt();
+                    }
+                    switch (userChoice3) {
+                        case 1 :
+                            System.out.println("Please Enter your new password : ");
+                            String newPassword = input.next();
+                            student.changePassword(newPassword);
+                            break;
+                        case 2 :
+                            String theUsername = student.getUsername();
+                            while(true) {
+                                System.out.println("Please Enter your new username : ");
+                                String newUsername = input.next();
+                                if(newUsername != student.getUsername()) {
+                                    boolean isExist = false;
+                                    for(int i = 0 ; i < Hogwarts.students.size() ; i++) {
+                                        if(Hogwarts.students.get(i).getUsername() == newUsername) {
+                                            isExist = true;
+                                        }
+                                    }
+                                    if(isExist == true) {
+                                        System.out.println("this username is already exist!!");
+                                    }
+                                    else {
+                                        student.changeUsername(newUsername);
+                                        for(int i = 0 ; i < Hogwarts.courses.size() ; i++) {
+                                            Course course2 = Hogwarts.courses.get(i);
+                                            for (int j = 0; j < course2.getStudents().size(); j++) {
+                                                if (course2.getStudents().get(j) == theUsername) {
+                                                    course2.getStudents().get(j) = theUsername;
+                                                }
+                                                course2.studentScore.put(theUsername, course2.studentScore.get(theUsername));
+                                                course2.studentScore.remove(theUsername);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 6 :
+                    break;
+            }
+        }
+    }
 
     public static void runMenu() {
-        // TODO: Menu will be shown here...
+        Scanner input = new Scanner(System.in);
+        while(true) {
+            System.out.println("Who are you : ");
+            System.out.println("1.Student");
+            System.out.println("2.Teacher");
+            System.out.println("3.Assistant");
+            int role = input.nextInt();
+            while(role > 3 || role < 1) {
+                System.out.println("Invalid Data!!!");
+                role = input.nextInt();
+            }
+            switch(role) {
+                case 1 :
+                    System.out.println("Do You want to :  \n1.signup \n2.login");
+                    int userchoice = input.nextInt();
+                    switch (userchoice) {
+
+                    }
+                    break;
+                case 2 :
+                    break;
+                case 3 :
+                    break;
+            }
+
+        }
     }
 }
