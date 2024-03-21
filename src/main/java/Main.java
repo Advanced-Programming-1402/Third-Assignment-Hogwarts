@@ -386,7 +386,7 @@ public class Main {
                     }
                     Course course = student.courses.get(userChoice2);
                     UUID tempuuid = UUID.randomUUID();
-                    if(student.scoreTeacher.get(course.getCourseID()) == null) {
+                    if(student.scoreTeacher.get(course.getCourseID()) == " ") {
                         System.out.println("Score this teacher : ");
                         Double teacherScore = input.nextDouble();
                         student.scoreTeacher(course.getCourseID() , teacherScore);
