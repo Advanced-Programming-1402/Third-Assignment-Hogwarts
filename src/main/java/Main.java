@@ -385,7 +385,8 @@ public class Main {
                         userChoice2 = input.nextInt();
                     }
                     Course course = student.courses.get(userChoice2);
-                    if(student.scoreTeacher( ,0.0).get(course.getCourseID()) == " ") {
+                    UUID tempuuid = UUID.randomUUID();
+                    if(student.scoreTeacher.get(course.getCourseID()) == null) {
                         System.out.println("Score this teacher : ");
                         Double teacherScore = input.nextDouble();
                         student.scoreTeacher(course.getCourseID() , teacherScore);
@@ -428,7 +429,7 @@ public class Main {
                                             Course course2 = Hogwarts.courses.get(i);
                                             for (int j = 0; j < course2.getStudents().size(); j++) {
                                                 if (course2.getStudents().get(j) == theUsername) {
-                                                    course2.getStudents().get(j) = theUsername;
+                                                    course2.getStudents().get(j).equals(newUsername);
                                                 }
                                                 course2.studentScore.put(theUsername, course2.studentScore.get(theUsername));
                                                 course2.studentScore.remove(theUsername);
@@ -463,12 +464,160 @@ public class Main {
                     System.out.println("Do You want to :  \n1.signup \n2.login");
                     int userchoice = input.nextInt();
                     switch (userchoice) {
+                        case 1 :
 
+                            while(true) {
+                                System.out.println("Please Enter Your UserName : ");
+                                String userUsername = input.next();
+                                boolean isExist = false;
+                                for(int i = 0 ; i < Hogwarts.students.size() ; i++) {
+                                    if(Hogwarts.students.get(i).getUsername() == userUsername) {
+                                        isExist = true;
+                                    }
+                                }
+                                while(isExist == true) {
+                                    System.out.println("This username is already exist please try another one : ");
+                                    userUsername = input.next();
+                                    isExist = false;
+                                    for(int i = 0 ; i < Hogwarts.students.size() ; i++) {
+                                        if(Hogwarts.students.get(i).getUsername() == userUsername) {
+                                            isExist = true;
+                                        }
+                                    }
+                                }
+                                System.out.println("Please Enter your password : ");
+                                String userPassword = input.next();
+                                Student student = new Student(userUsername , userPassword);
+                                Hogwarts.students.add(student);
+                                break;
+                            }
+                            break;
+                        case 2 :
+                            while(true) {
+                                System.out.println("Please Enter your username : ");
+                                String userUsername = input.next();
+                                boolean isExist2 = false;
+                                Student student = new Student("","");
+                                for(int i = 0 ; i < Hogwarts.students.size() ; i++) {
+                                    if(Hogwarts.students.get(i).getUsername() == userUsername) {
+                                        student = Hogwarts.students.get(i);
+                                        isExist2 = true;
+                                    }
+
+                                }
+                                if(isExist2 == false) {
+                                    System.out.println("This user is not found ...");
+                                }
+                                else {
+                                    while(true) {
+                                        System.out.println("Please enter your password : ");
+                                        String userPassword = input.next();
+                                        if(student.validatePassword(userPassword)) {
+                                            studentMenu(student);
+                                            break;
+                                        }
+                                        else{
+                                            System.out.println("Your password is not correct!!!");
+                                        }
+                                    }
+                                }
+                            }
                     }
                     break;
                 case 2 :
+                    System.out.println("1.SignUp \n2.Login");
+                    int user = input.nextInt();
+                    switch(user){
+                        case 1 :
+                            while(true) {
+                                System.out.println("Please Enter your username :");
+                                String userUsername = input.next();
+                                boolean isExist = false;
+                                for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
+                                    if(Hogwarts.teachers.get(i).getUsername() == userUsername) {
+                                        isExist = true;
+                                    }
+                                }
+                                if(isExist == false){
+                                    System.out.println("This user is already exist!!!");
+                                }
+                                else {
+                                    System.out.println("Please Enter your password : ");
+                                    String userPassWord = input.next();
+                                    Teacher teacher = new Teacher(userUsername ,userPassWord);
+                                    teacher.setPassword(userPassWord);
+                                    Hogwarts.teachers.add(teacher);
+                                    Assistant.tempTeacher.add(teacher);
+                                    System.out.println("Successful..");
+                                    break;
+                               }
+                            }
+                            break;
+                        case 2 :
+                            while(true) {
+                                System.out.println("Please Enter you username : ");
+                                String userUserName = input.next();
+                                boolean isExist = false;
+                                Teacher teacher = new Teacher("", "");
+                                for(int i = 0 ; i < Hogwarts.teachers.size() ; i++) {
+                                    if(Hogwarts.teachers.get(i).getUsername() == userUserName) {
+                                        teacher = Hogwarts.teachers.get(i);
+                                        isExist = true;
+                                    }
+
+                                }
+                                if(isExist == false) {
+                                    System.out.println("This user is not found!!!");
+                                }
+                                else {
+                                    while(true) {
+                                        System.out.println("Please Enter your password : ");
+                                        String userPass = input.next();
+                                        if(teacher.validatePassword(userPass)) {
+                                            teacherMenu(teacher);
+                                            break;
+                                        }
+                                        else {
+                                            System.out.println("this password in not correct!!!");
+                                        }
+                                    }
+                                    break;
+                                }
+
+                            }
+                            break;
+                    }
                     break;
                 case 3 :
+                    while(true) {
+                        System.out.println("Please Enter your username :");
+                        String userusername = input.next();
+                        boolean isExist = false;
+                        Assistant assistant = new Assistant("" ,"");
+                        for(int i = 0 ; i < Hogwarts.assistants.size() ; i++) {
+                            if(Hogwarts.assistants.get(i).getUsername() == userusername) {
+                                assistant = Hogwarts.assistants.get(i);
+                                isExist = true;
+                            }
+                        }
+                        if(isExist == false) {
+                            System.out.println("this user in not exist!!");
+                        }
+                        else {
+                            while(true) {
+                                System.out.println("Please Enter your Password : ");
+                                String userpass = input.next();
+                                if(assistant.validatePassword(userpass)){
+                                    assistantMenu(assistant);
+                                    break;
+                                }
+                                else {
+                                    System.out.println("Your password is not correct!!");
+                                }
+                            }
+                            break;
+                        }
+                    }
                     break;
             }
 
