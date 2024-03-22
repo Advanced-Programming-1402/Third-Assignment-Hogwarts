@@ -2,7 +2,7 @@ import javax.swing.plaf.IconUIResource;
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
-        Assistant assistant = new Assistant("" ,"");
+        Assistant assistant = new Assistant("fatemelashkari" ,"1384");
         Hogwarts.addAssistant(assistant);
         runMenu();
     }
@@ -50,7 +50,7 @@ public class Main {
                                     }
                                 }
                                 System.out.println();
-                                System.out.println(Hogwarts.teachers.get(userhoice1-1).getTeacherScore());
+                                System.out.println(Hogwarts.teachers.get(userhoice1-1));
 
 
                             break;
@@ -225,7 +225,7 @@ public class Main {
 
                         }
                     }
-                    break;
+
                 case 8:
                     break;
 
@@ -368,8 +368,9 @@ public class Main {
                     break;
                 case 2 :
                     for(int i = 0 ; i < student.getCourses().size() ; i++) {
-                        System.out.println(student.getTeachers().get(i).getUsername() + " ");
+                        System.out.print(student.getCourses().get(i).getCourseName() + " ");
                     }
+                    System.out.println();
                     break;
                 case 3 :
                     break;
@@ -386,14 +387,7 @@ public class Main {
                     }
                     Course course = student.courses.get(userChoice2);
                     UUID tempuuid = UUID.randomUUID();
-                    if(student.scoreTeacher.get(course.getCourseID()) == " ") {
-                        System.out.println("Score this teacher : ");
-                        Double teacherScore = input.nextDouble();
-                        student.scoreTeacher(course.getCourseID() , teacherScore);
-                    }
-                    else{
-                        System.out.println("You have already score this teacher!!!");
-                    }
+                    System.out.println("You have already score this teacher!!!");
                     break;
                 case 5 :
                     System.out.println("1.Change PassWord \n2.Change UserName ");
@@ -438,7 +432,7 @@ public class Main {
                                     }
                                 }
                             }
-                            break;
+
                     }
                     break;
                 case 6 :
